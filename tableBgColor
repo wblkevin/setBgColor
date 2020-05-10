@@ -1,0 +1,29 @@
+#!/usr/local/python3.8.0
+# coding: utf-8
+from docx import Document
+from docx.oxml.ns import nsdecls
+from docx.oxml import parse_xml
+
+# 表格首行背景色设置
+
+
+def tabBgColor(table,cols,colorStr):
+    shading_list = locals()
+    for i in range(cols):
+        shading_list['shading_elm_'+str(i)] = parse_xml(r'<w:shd {} w:fill="{bgColor}"/>'.format(nsdecls('w'),bgColor = colorStr))
+        table.rows[0].cells[i]._tc.get_or_add_tcPr().append(shading_list['shading_elm_'+str(i)])
+
+
+# 新建表行数
+rowsNum = 3
+# 新建表列数
+colsNum = 3
+colorStr = '6495ED'
+
+doc = Document()
+tableDemo = doc.add_table(rows=rowsNum, cols=colsNum, style='Table Grid')
+
+tabBgColor(tableDemo, colsNum, colorStr)
+doc.save('demo.docx')
+
+
